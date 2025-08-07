@@ -77,3 +77,22 @@ extension AgeViewController: UIConfiguable {
         configureAlignment(for: &label, to: .center)
     }
 }
+
+extension AgeViewController {
+    private func validate(_ text: String?) throws -> Int {
+        guard let text = text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
+            throw AgeValidationError.isEmpty
+        }
+
+        guard let age = Int(text) else {
+            throw AgeValidationError.notANumber
+        }
+        
+        guard (1...100).contains(age) else {
+            throw AgeValidationError.notValidAge
+        }
+
+        return age
+    }
+    
+}

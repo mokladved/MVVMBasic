@@ -10,3 +10,7 @@ import UIKit
 protocol TextAlignmentConfiguable {
     var textAlignment: NSTextAlignment { get set }
 }
+
+func configureAlignment<T>(for view: inout T, to alignment: NSTextAlignment) where T: UIView, T: TextAlignmentConfiguable {
+    view.textAlignment = alignment
+}

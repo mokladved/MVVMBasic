@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension ViewController {
+extension UIViewController {
     func configureBorder<T: UIView>(
         target view: T,
         radius: CGFloat,

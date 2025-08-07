@@ -46,14 +46,7 @@ final class AgeViewController: UIViewController {
             let age = try validate(textField.text)
             label.text = "당신은 \(age)세 입니다."
         } catch {
-            switch error {
-            case .isEmpty:
-                showAlert(title: "오류", message: error.description)
-            case .notANumber:
-                showAlert(title: "오류", message: error.description)
-            case .notValidAge:
-                showAlert(title: "오류", message: error.description)
-            }
+            showAlert(title: "오류", message: error.description)
         }
     }
 }

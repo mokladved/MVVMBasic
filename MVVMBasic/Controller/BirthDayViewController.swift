@@ -68,9 +68,18 @@ final class BirthDayViewController: UIViewController {
     
     @objc private func resultButtonTapped() {
         view.endEditing(true)
+        
+        do {
+            let birthDate = try validate(year: yearTextField.text, month: monthTextField.text, day: dayTextField.text)
+            if let dDay = calculateDDays(from: birthDate) {
+                resultLabel.text = "오늘 날짜를 기준으로 D+\(dDay)입니다."
+            } else {
+                showAlert(title: "계산 오류", message: "날짜 계산이 유효하지 않습니다.")
+            }
+        } catch {
+            showAlert(title: "오류", message: error.description)
+        }
     }
-    
-
 }
 
 extension BirthDayViewController: UIConfiguable {
@@ -139,5 +148,58 @@ extension BirthDayViewController: UIConfiguable {
         configureBackgroundColor(from: resultButton, color: .systemBlue)
         configureAlignment(for: &resultLabel, to: .center)
         
+    }
+}
+
+// TODO: 다른 유효한 날짜 검증 방법 찾기
+extension BirthDayViewController {
+    private func validate(year: String?, month: String?, day: String?) throws(BirthDayValidationError) -> Date {
+        guard let yearText = year, !yearText.trimmingCharacters(in: .whitespaces).isEmpty else {
+            throw BirthDayValidationError.isEmpty(field: "년")
+        }
+        
+        guard let monthText = month, !monthText.trimmingCharacters(in: .whitespaces).isEmpty else {
+            throw BirthDayValidationError.isEmpty(field: "월")
+        }
+        
+        guard let dayText = day, !dayText.trimmingCharacters(in: .whitespaces).isEmpty else {
+            throw BirthDayValidationError.isEmpty(field: "일") }
+        
+        guard let year = Int(yearText) else {
+            throw BirthDayValidationError.notANumber(field: "년")
+        }
+        
+        guard let month = Int(monthText) else {
+            throw BirthDayValidationError.notANumber(field: "월")
+        }
+        
+        guard let day = Int(dayText) else {
+            throw BirthDayValidationError.notANumber(field: "일")
+        }
+        
+        let formattedMonth = String(format: "%02d", month)
+        let formattedDay = String(format: "%02d", day)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        formatter.isLenient = false
+        
+        let dateString = "\(year)\(formattedMonth)\(formattedDay)"
+        
+        if let date = formatter.date(from: dateString) {
+            return date
+        }
+        throw BirthDayValidationError.notValidDate
+    }
+    
+    private func calculateDDays(from past: Date) -> Int? {
+        let calendar = Calendar.current
+        
+        let now = Date()
+        let today = calendar.startOfDay(for: now)
+        let past = calendar.startOfDay(for: past)
+        
+        let result = calendar.dateComponents([.day], from: past, to: today)
+        return result.day
     }
 }

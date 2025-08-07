@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AgeViewController: UIViewController {
+final class AgeViewController: UIViewController, UIConfiguable {
     private let textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "나이를 입력해주세요"
@@ -35,13 +35,13 @@ final class AgeViewController: UIViewController {
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
     
-    private func configureHierarchy() {
+    func configureHierarchy() {
         view.addSubview(textField)
         view.addSubview(resultButton)
         view.addSubview(label)
     }
     
-    private func configureLayout() {
+    func configureLayout() {
         textField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.horizontalEdges.equalToSuperview().inset(20)
@@ -61,7 +61,7 @@ final class AgeViewController: UIViewController {
         }
     }
     
-    private func configureView() {
+    func configureView() {
         configureBorder(target: resultButton, radius: 8)
         configureBackgroundColor(from: resultButton, color: .systemBlue)
     }

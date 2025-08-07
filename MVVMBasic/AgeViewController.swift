@@ -16,7 +16,6 @@ final class AgeViewController: UIViewController {
     }()
     private let resultButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .systemBlue
         button.setTitle( "클릭", for: .normal)
         return button
     }()
@@ -64,6 +63,7 @@ final class AgeViewController: UIViewController {
     
     private func configureView() {
         configureBorder(target: resultButton, radius: 8)
+        configureBackgroundColor(from: resultButton, color: .systemBlue)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

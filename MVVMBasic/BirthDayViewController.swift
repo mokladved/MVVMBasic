@@ -44,7 +44,6 @@ final class BirthDayViewController: UIViewController {
     }()
     private let resultButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .systemBlue
         button.setTitle( "클릭", for: .normal)
         return button
     }()
@@ -77,6 +76,7 @@ final class BirthDayViewController: UIViewController {
     
     private func configureView() {
         configureBorder(target: resultButton, radius: 8)
+        configureBackgroundColor(from: resultButton, color: .systemBlue)
     }
     
     private func configureLayout() {

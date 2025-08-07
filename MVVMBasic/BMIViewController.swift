@@ -7,27 +7,27 @@
 
 import UIKit
 
-class BMIViewController: UIViewController {
-    let heightTextField: UITextField = {
+final class BMIViewController: UIViewController {
+    private let heightTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "키를 입력해주세요"
         textField.borderStyle = .roundedRect
         return textField
     }()
-    let ageTextField: UITextField = {
+    private let ageTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "몸무게를 입력해주세요"
         textField.borderStyle = .roundedRect
         return textField
     }()
-    let resultButton: UIButton = {
+    private let resultButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBlue
         button.setTitle("클릭", for: .normal)
         button.layer.cornerRadius = 8
         return button
     }()
-    let resultLabel: UILabel = {
+    private let resultLabel: UILabel = {
         let label = UILabel()
         label.text = "여기에 결과를 보여주세요"
         label.textAlignment = .center
@@ -42,14 +42,14 @@ class BMIViewController: UIViewController {
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         view.addSubview(heightTextField)
         view.addSubview(ageTextField)
         view.addSubview(resultButton)
         view.addSubview(resultLabel)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         heightTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.horizontalEdges.equalToSuperview().inset(20)
@@ -79,7 +79,7 @@ class BMIViewController: UIViewController {
         view.endEditing(true)
     }
     
-    @objc func resultButtonTapped() {
+    @objc private func resultButtonTapped() {
         view.endEditing(true)
     }
 }

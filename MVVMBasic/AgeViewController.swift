@@ -7,21 +7,21 @@
 
 import UIKit
 
-class AgeViewController: UIViewController {
-    let textField: UITextField = {
+final class AgeViewController: UIViewController {
+    private let textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "나이를 입력해주세요"
         textField.borderStyle = .roundedRect
         return textField
     }()
-    let resultButton: UIButton = {
+    private let resultButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBlue
         button.setTitle( "클릭", for: .normal)
         button.layer.cornerRadius = 8
         return button
     }()
-    let label: UILabel = {
+    private let label: UILabel = {
         let label = UILabel()
         label.text = "여기에 결과를 보여주세요"
         label.textAlignment = .center
@@ -36,13 +36,13 @@ class AgeViewController: UIViewController {
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         view.addSubview(textField)
         view.addSubview(resultButton)
         view.addSubview(label)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         textField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.horizontalEdges.equalToSuperview().inset(20)
@@ -66,7 +66,7 @@ class AgeViewController: UIViewController {
         view.endEditing(true)
     }
     
-    @objc func resultButtonTapped() {
+    @objc private func resultButtonTapped() {
         view.endEditing(true)
     }
 }

@@ -8,48 +8,48 @@
 import UIKit
 import SnapKit
 
-class BirthDayViewController: UIViewController {
-    let yearTextField: UITextField = {
+final class BirthDayViewController: UIViewController {
+    private let yearTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "년도를 입력해주세요"
         textField.borderStyle = .roundedRect
         return textField
     }()
-    let yearLabel: UILabel = {
+    private let yearLabel: UILabel = {
         let label = UILabel()
         label.text = "년"
         return label
     }()
-    let monthTextField: UITextField = {
+    private let monthTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "월을 입력해주세요"
         textField.borderStyle = .roundedRect
         return textField
     }()
-    let monthLabel: UILabel = {
+    private let monthLabel: UILabel = {
         let label = UILabel()
         label.text = "월"
         return label
     }()
-    let dayTextField: UITextField = {
+    private let dayTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "일을 입력해주세요"
         textField.borderStyle = .roundedRect
         return textField
     }()
-    let dayLabel: UILabel = {
+    private let dayLabel: UILabel = {
         let label = UILabel()
         label.text = "일"
         return label
     }()
-    let resultButton: UIButton = {
+    private let resultButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBlue
         button.setTitle( "클릭", for: .normal)
         button.layer.cornerRadius = 8
         return button
     }()
-    let resultLabel: UILabel = {
+    private let resultLabel: UILabel = {
         let label = UILabel()
         label.text = "여기에 결과를 보여주세요"
         label.textAlignment = .center
@@ -64,7 +64,7 @@ class BirthDayViewController: UIViewController {
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
     
-    func configureHierarchy() {
+    private func configureHierarchy() {
         view.addSubview(yearTextField)
         view.addSubview(yearLabel)
         view.addSubview(monthTextField)
@@ -75,7 +75,7 @@ class BirthDayViewController: UIViewController {
         view.addSubview(resultLabel)
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         yearTextField.snp.makeConstraints { make in
             make.top.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.width.equalTo(200)
@@ -128,7 +128,7 @@ class BirthDayViewController: UIViewController {
         view.endEditing(true)
     }
     
-    @objc func resultButtonTapped() {
+    @objc private func resultButtonTapped() {
         view.endEditing(true)
     }
     

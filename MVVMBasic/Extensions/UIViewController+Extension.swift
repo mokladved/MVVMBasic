@@ -20,4 +20,8 @@ extension UIViewController {
         view.layer.borderColor = color?.cgColor
         view.layer.masksToBounds = true
     }
+    
+    func configureBackgroundColor<T: UIView> (from view: T, color: UIColor) {
+        view.backgroundColor = color
+    }
 }

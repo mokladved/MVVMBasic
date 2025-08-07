@@ -46,7 +46,6 @@ final class BirthDayViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = .systemBlue
         button.setTitle( "클릭", for: .normal)
-        button.layer.cornerRadius = 8
         return button
     }()
     private let resultLabel: UILabel = {
@@ -60,6 +59,7 @@ final class BirthDayViewController: UIViewController {
         super.viewDidLoad()
         configureHierarchy()
         configureLayout()
+        configureView()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
@@ -73,6 +73,10 @@ final class BirthDayViewController: UIViewController {
         view.addSubview(dayLabel)
         view.addSubview(resultButton)
         view.addSubview(resultLabel)
+    }
+    
+    private func configureView() {
+        configureBorder(target: resultButton, radius: 8)
     }
     
     private func configureLayout() {

@@ -18,7 +18,6 @@ final class AgeViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = .systemBlue
         button.setTitle( "클릭", for: .normal)
-        button.layer.cornerRadius = 8
         return button
     }()
     private let label: UILabel = {
@@ -32,6 +31,7 @@ final class AgeViewController: UIViewController {
         super.viewDidLoad()
         configureHierarchy()
         configureLayout()
+        configureView()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
@@ -60,6 +60,10 @@ final class AgeViewController: UIViewController {
             make.horizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(44)
         }
+    }
+    
+    private func configureView() {
+        configureBorder(target: resultButton, radius: 8)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

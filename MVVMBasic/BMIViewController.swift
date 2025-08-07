@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class BMIViewController: UIViewController, UIConfiguable {
+final class BMIViewController: UIViewController {
     private let heightTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "키를 입력해주세요"
@@ -41,6 +41,19 @@ final class BMIViewController: UIViewController, UIConfiguable {
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
     
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    @objc private func resultButtonTapped() {
+        view.endEditing(true)
+    }
+}
+
+
+extension BMIViewController {
     func configureHierarchy() {
         view.addSubview(heightTextField)
         view.addSubview(ageTextField)
@@ -77,13 +90,5 @@ final class BMIViewController: UIViewController, UIConfiguable {
     func configureView() {
         configureBorder(target: resultButton, radius: 8)
         configureBackgroundColor(from: resultButton, color: .systemBlue)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
-    
-    @objc private func resultButtonTapped() {
-        view.endEditing(true)
     }
 }

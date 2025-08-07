@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class BirthDayViewController: UIViewController, UIConfiguable {
+final class BirthDayViewController: UIViewController {
     private let yearTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "년도를 입력해주세요"
@@ -63,6 +63,18 @@ final class BirthDayViewController: UIViewController, UIConfiguable {
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    @objc private func resultButtonTapped() {
+        view.endEditing(true)
+    }
+    
+
+}
+
+extension BirthDayViewController: UIConfiguable {
     func configureHierarchy() {
         view.addSubview(yearTextField)
         view.addSubview(yearLabel)
@@ -127,14 +139,4 @@ final class BirthDayViewController: UIViewController, UIConfiguable {
         configureBorder(target: resultButton, radius: 8)
         configureBackgroundColor(from: resultButton, color: .systemBlue)
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
-    
-    @objc private func resultButtonTapped() {
-        view.endEditing(true)
-    }
-    
-
 }

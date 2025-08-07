@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AgeViewController: UIViewController, UIConfiguable {
+final class AgeViewController: UIViewController {
     private let textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "나이를 입력해주세요"
@@ -35,6 +35,17 @@ final class AgeViewController: UIViewController, UIConfiguable {
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
     
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
+    @objc private func resultButtonTapped() {
+        view.endEditing(true)
+    }
+}
+
+extension AgeViewController: UIConfiguable {
     func configureHierarchy() {
         view.addSubview(textField)
         view.addSubview(resultButton)
@@ -64,13 +75,5 @@ final class AgeViewController: UIViewController, UIConfiguable {
     func configureView() {
         configureBorder(target: resultButton, radius: 8)
         configureBackgroundColor(from: resultButton, color: .systemBlue)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
-    
-    @objc private func resultButtonTapped() {
-        view.endEditing(true)
     }
 }

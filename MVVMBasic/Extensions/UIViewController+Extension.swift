@@ -11,11 +11,13 @@ extension UIViewController {
     func configureBorder<T: UIView>(
         target view: T,
         radius: CGFloat,
-        width: CGFloat = 1,
-        color: CGColor = UIColor.black.cgColor )
+        width: CGFloat = 0,
+        color: UIColor? = nil,
+    )
     {
         view.layer.cornerRadius = radius
         view.layer.borderWidth = width
-        view.layer.borderColor = color
+        view.layer.borderColor = color?.cgColor
+        view.layer.masksToBounds = true
     }
 }

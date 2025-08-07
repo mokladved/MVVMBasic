@@ -41,6 +41,20 @@ final class AgeViewController: UIViewController {
     
     @objc private func resultButtonTapped() {
         view.endEditing(true)
+        
+        do {
+            let age = try validate(textField.text)
+            label.text = "당신은 \(age)세 입니다."
+        } catch {
+            switch error {
+            case .isEmpty:
+                showAlert(title: "오류", message: error.description)
+            case .notANumber:
+                showAlert(title: "오류", message: error.description)
+            case .notValidAge:
+                showAlert(title: "오류", message: error.description)
+            }
+        }
     }
 }
 
@@ -79,11 +93,11 @@ extension AgeViewController: UIConfiguable {
 }
 
 extension AgeViewController {
-    private func validate(_ text: String?) throws -> Int {
+    private func validate(_ text: String?) throws(AgeValidationError) -> Int {
         guard let text = text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
             throw AgeValidationError.isEmpty
         }
-
+        
         guard let age = Int(text) else {
             throw AgeValidationError.notANumber
         }
@@ -91,7 +105,7 @@ extension AgeViewController {
         guard (1...100).contains(age) else {
             throw AgeValidationError.notValidAge
         }
-
+        
         return age
     }
     

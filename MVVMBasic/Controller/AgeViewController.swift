@@ -19,10 +19,9 @@ final class AgeViewController: UIViewController {
         button.setTitle( "클릭", for: .normal)
         return button
     }()
-    private let label: UILabel = {
+    private var label: UILabel = {
         let label = UILabel()
         label.text = "여기에 결과를 보여주세요"
-        label.textAlignment = .center
         return label
     }()
     
@@ -75,5 +74,6 @@ extension AgeViewController: UIConfiguable {
     func configureView() {
         configureBorder(target: resultButton, radius: 8)
         configureBackgroundColor(from: resultButton, color: .systemBlue)
+        configureAlignment(for: &label, to: .center)
     }
 }

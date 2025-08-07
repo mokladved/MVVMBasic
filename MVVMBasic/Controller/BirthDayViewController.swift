@@ -47,10 +47,9 @@ final class BirthDayViewController: UIViewController {
         button.setTitle( "클릭", for: .normal)
         return button
     }()
-    private let resultLabel: UILabel = {
+    private var resultLabel: UILabel = {
         let label = UILabel()
         label.text = "여기에 결과를 보여주세요"
-        label.textAlignment = .center
         return label
     }()
     
@@ -138,5 +137,7 @@ extension BirthDayViewController: UIConfiguable {
     func configureView() {
         configureBorder(target: resultButton, radius: 8)
         configureBackgroundColor(from: resultButton, color: .systemBlue)
+        configureAlignment(for: &resultLabel, to: .center)
+        
     }
 }

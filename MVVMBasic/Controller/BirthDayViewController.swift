@@ -72,7 +72,7 @@ final class BirthDayViewController: UIViewController {
         do {
             let birthDate = try validate(year: yearTextField.text, month: monthTextField.text, day: dayTextField.text)
             if let dDay = calculateDDays(from: birthDate) {
-                resultLabel.text = "오늘 날짜를 기준으로 D+\(dDay)입니다."
+                resultLabel.text = "오늘 날짜를 기준으로 D+\(dDay) 입니다."
             } else {
                 showAlert(title: "계산 오류", message: "날짜 계산이 유효하지 않습니다.")
             }

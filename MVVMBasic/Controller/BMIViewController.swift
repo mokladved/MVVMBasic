@@ -143,7 +143,7 @@ extension BMIViewController {
         case 18.5..<23:
             return ("당신의 BMI 지수는, \(result)로 정상입니다.")
         case 23..<25:
-            return ("당신의 BMI 지수는, \(result)로과체중입니다.")
+            return ("당신의 BMI 지수는, \(result)로 과체중입니다.")
         default:
             return ("당신의 BMI 지수는, \(result)로 비만입니다.")
         }

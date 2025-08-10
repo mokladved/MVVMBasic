@@ -10,9 +10,10 @@ import SnapKit
 
 class CurrencyViewController: UIViewController {
     
+    let viewModel = CurrencyViewModel()
+    
     private let exchangeRateLabel: UILabel = {
         let label = UILabel()
-        label.text = "현재 환율: 1 USD = 1,350 KRW"
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 16, weight: .medium)
         return label
@@ -51,6 +52,7 @@ class CurrencyViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupActions()
+        update()
     }
      
     private func setupUI() {
@@ -85,19 +87,21 @@ class CurrencyViewController: UIViewController {
         }
     }
     
+    private func update() {
+        viewModel.outputRate = { [weak self] in
+            self?.exchangeRateLabel.text = self?.viewModel.rate
+        }
+
+        viewModel.outputLabel = { [weak self] in
+            self?.resultLabel.text = self?.viewModel.message
+        }
+    }
+    
     private func setupActions() {
         convertButton.addTarget(self, action: #selector(convertButtonTapped), for: .touchUpInside)
     }
      
     @objc private func convertButtonTapped() {
-        guard let amountText = amountTextField.text,
-              let amount = Double(amountText) else {
-            resultLabel.text = "올바른 금액을 입력해주세요"
-            return
-        }
-        
-        let exchangeRate = 1350.0 // 실제 환율 데이터로 대체 필요
-        let convertedAmount = amount / exchangeRate
-        resultLabel.text = String(format: "%.2f USD (약 $%.2f)", convertedAmount, convertedAmount)
+        viewModel.inputField = amountTextField.text
     }
 }

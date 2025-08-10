@@ -8,6 +8,9 @@
 import UIKit
 
 final class BMIViewController: UIViewController {
+    
+    let viewModel = BMIViewModel()
+    
     private let heightTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "키를 입력해주세요"
@@ -36,10 +39,21 @@ final class BMIViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureView()
+        update()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
     
+    private func update() {
+        viewModel.bmiResult = { [weak self] message in
+            self?.resultLabel.text = message
+        }
+        
+        viewModel.validationError = { [weak self] error in
+            self?.resultLabel.text = error.description
+            self?.showAlert(title: "오류", message: error.description)
+        }
+    }
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -48,15 +62,10 @@ final class BMIViewController: UIViewController {
     
     @objc private func resultButtonTapped() {
         view.endEditing(true)
-        do {
-            let values = try validate(height: heightTextField.text, weight: weightTextField.text)
-            let bmi = calculateBMI(height: values.height, weight: values.weight)
-            let result = getResult(from: bmi)
-            
-            resultLabel.text = result
-        } catch {
-            showAlert(title: "오류", message: error.description)
-        }
+        viewModel.inputField = (
+            height: heightTextField.text,
+            weight: weightTextField.text
+        )
     }
 }
 
@@ -98,54 +107,5 @@ extension BMIViewController {
         configureBorder(target: resultButton, radius: 8)
         configureBackgroundColor(from: resultButton, color: .systemBlue)
         configureAlignment(for: &resultLabel, to: .center)
-    }
-}
-
-extension BMIViewController {
-    private func validate(height: String?, weight: String?) throws(BMIValidationError) -> (height: Double, weight: Double) {
-        guard let text = height, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            throw BMIValidationError.isEmpty(value: "키")
-        }
-        guard let height = Double(text) else {
-            throw BMIValidationError.notANumber(value: "키")
-        }
-        
-        guard (65...289).contains(height) else {
-            throw BMIValidationError.notValidInput(value: "키")
-        }
-        
-        guard let text = weight, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            throw BMIValidationError.isEmpty(value: "몸무게")
-        }
-        
-        guard let weight = Double(text) else {
-            throw BMIValidationError.notANumber(value: "몸무게")
-        }
-        
-        guard (1...635).contains(weight) else {
-            throw BMIValidationError.notValidInput(value: "몸무게")
-        }
-        
-        return (height, weight)
-    }
-    
-    private func calculateBMI(height: Double, weight: Double) -> Double {
-        let height = height / 100
-        let bmi = weight / (height * height)
-        return bmi
-    }
-    
-    private func getResult(from bmi: Double) -> String {
-        let result = String(format: "%.1f", bmi)
-        switch bmi {
-        case ..<18.5:
-            return ("당신의 BMI 지수는, \(result)로 저체중입니다")
-        case 18.5..<23:
-            return ("당신의 BMI 지수는, \(result)로 정상입니다.")
-        case 23..<25:
-            return ("당신의 BMI 지수는, \(result)로 과체중입니다.")
-        default:
-            return ("당신의 BMI 지수는, \(result)로 비만입니다.")
-        }
     }
 }

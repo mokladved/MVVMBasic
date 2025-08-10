@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WordCounterViewModel {
+final class WordCounterViewModel {
     var inputField = "" {
         didSet {
             countText()

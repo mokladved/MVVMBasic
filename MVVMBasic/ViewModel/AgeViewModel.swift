@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AgeViewModel {
+final class AgeViewModel {
     var inputField: String? {
         didSet {
             validate(inputField)

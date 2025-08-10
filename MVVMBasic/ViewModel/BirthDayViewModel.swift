@@ -7,7 +7,7 @@
 
 import Foundation
 
-class BirthDayViewModel {
+final class BirthDayViewModel {
     var dDayResult: ((String) -> Void)?
     var validationError: ((BirthDayValidationError) -> Void)?
     

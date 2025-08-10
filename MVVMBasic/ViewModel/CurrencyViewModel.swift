@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CurrencyViewModel {
+final class CurrencyViewModel {
     private let exchangeRate = 1391.0
     
     var inputField: String? = "" {

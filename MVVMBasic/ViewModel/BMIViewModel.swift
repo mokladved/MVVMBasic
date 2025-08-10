@@ -7,7 +7,7 @@
 
 import Foundation
 
-class BMIViewModel {
+final class BMIViewModel {
     var inputField: (height: String?, weight: String?)? {
         didSet {
             calculate()

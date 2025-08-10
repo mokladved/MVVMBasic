@@ -6,8 +6,12 @@
 //
 
 import UIKit
+import SnapKit
+
 
 final class AgeViewController: UIViewController {
+    let viewModel = AgeViewModel()
+    
     private let textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "나이를 입력해주세요"
@@ -30,6 +34,7 @@ final class AgeViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureView()
+        update()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
@@ -39,15 +44,21 @@ final class AgeViewController: UIViewController {
         view.endEditing(true)
     }
     
+    func update() {
+        viewModel.success = { [weak self] message in
+            self?.label.text = message
+            
+        }
+        
+        viewModel.failure = { [weak self] error in
+            self?.label.text = error.description
+            self?.showAlert(title: "입력 오류", message: error.description)
+        }
+    }
+    
     @objc private func resultButtonTapped() {
         view.endEditing(true)
-        
-        do {
-            let age = try validate(textField.text)
-            label.text = "당신은 \(age)세 입니다."
-        } catch {
-            showAlert(title: "오류", message: error.description)
-        }
+        viewModel.inputField = textField.text
     }
 }
 
@@ -85,21 +96,4 @@ extension AgeViewController: UIConfiguable {
     }
 }
 
-extension AgeViewController {
-    private func validate(_ text: String?) throws(AgeValidationError) -> Int {
-        guard let text = text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            throw AgeValidationError.isEmpty
-        }
-        
-        guard let age = Int(text) else {
-            throw AgeValidationError.notANumber
-        }
-        
-        guard (1...100).contains(age) else {
-            throw AgeValidationError.notValidAge
-        }
-        
-        return age
-    }
-    
-}
+

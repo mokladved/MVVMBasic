@@ -9,6 +9,10 @@ import UIKit
 import SnapKit
 
 final class BirthDayViewController: UIViewController {
+    
+    private let viewModel = BirthDayViewModel()
+    
+    
     private let yearTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "년도를 입력해주세요"
@@ -58,6 +62,7 @@ final class BirthDayViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureView()
+        update()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
@@ -66,19 +71,25 @@ final class BirthDayViewController: UIViewController {
         view.endEditing(true)
     }
     
+    private func update() {
+        viewModel.dDayResult = { [weak self] message in
+            self?.resultLabel.text = message
+        }
+        
+        viewModel.validationError = { [weak self] error in
+            self?.resultLabel.text = error.description
+            self?.showAlert(title: "오류", message: error.description)
+        }
+    }
+    
+    
     @objc private func resultButtonTapped() {
         view.endEditing(true)
-        
-        do {
-            let birthDate = try validate(year: yearTextField.text, month: monthTextField.text, day: dayTextField.text)
-            if let dDay = calculateDDays(from: birthDate) {
-                resultLabel.text = "오늘 날짜를 기준으로 D+\(dDay) 입니다."
-            } else {
-                showAlert(title: "계산 오류", message: "날짜 계산이 유효하지 않습니다.")
-            }
-        } catch {
-            showAlert(title: "오류", message: error.description)
-        }
+        viewModel.inputField = (
+            year: yearTextField.text,
+            month: monthTextField.text,
+            day: dayTextField.text
+        )
     }
 }
 

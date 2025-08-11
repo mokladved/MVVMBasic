@@ -34,7 +34,7 @@ final class AgeViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureView()
-        update()
+        bind()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
@@ -44,7 +44,7 @@ final class AgeViewController: UIViewController {
         view.endEditing(true)
     }
     
-    func update() {
+    func bind() {
         viewModel.success.bind { [weak self] message in
             self?.label.text = message
         }

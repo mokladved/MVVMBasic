@@ -14,17 +14,19 @@ final class BMIViewModel {
         }
     }
     
-    var bmiResult: ((String) -> Void)?
-    var validationError: ((BMIValidationError) -> Void)?
+    var bmiResult: Observable<String?> = Observable(nil)
+    var validationError: Observable<BMIValidationError?> = Observable(nil)
     
     private func calculate() {
+        bmiResult.value = nil
+        validationError.value = nil
         do {
             let values = try validate(height: inputField?.height, weight: inputField?.weight)
             let bmi = calculateBMI(height: values.height, weight: values.weight)
             let result = getResult(from: bmi)
-            bmiResult?(result)
+            bmiResult.value = result
         } catch let error {
-            validationError?(error)
+            validationError.value = error
         }
     }
     

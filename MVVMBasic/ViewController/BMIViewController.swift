@@ -39,17 +39,20 @@ final class BMIViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         configureView()
-        update()
+        bind()
         
         resultButton.addTarget(self, action: #selector(resultButtonTapped), for: .touchUpInside)
     }
     
-    private func update() {
-        viewModel.bmiResult = { [weak self] message in
+    private func bind() {
+        viewModel.bmiResult.bind { [weak self] message in
             self?.resultLabel.text = message
         }
         
-        viewModel.validationError = { [weak self] error in
+        viewModel.validationError.bind { [weak self] error in
+            guard let error = error else {
+                return
+            }
             self?.resultLabel.text = error.description
             self?.showAlert(title: "오류", message: error.description)
         }

@@ -12,12 +12,15 @@ import SnapKit
 class MapViewController: UIViewController {
      
     private let mapView = MKMapView()
+    private let viewModel = MapViewModel()
+
      
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupMapView()
-        addSeoulStationAnnotation()
+        addMunraeStationAnnotation()
+        bind()
     }
      
     private func setupUI() {
@@ -43,9 +46,10 @@ class MapViewController: UIViewController {
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .none
          
-        let seoulStationCoordinate = CLLocationCoordinate2D(latitude: 37.5547, longitude: 126.9706)
+//        let seoulStationCoordinate = CLLocationCoordinate2D(latitude: 37.5547, longitude: 126.9706)
+        let munraeStationCoordinate = CLLocationCoordinate2D(latitude: 37.5170, longitude: 126.8978)
         let region = MKCoordinateRegion(
-            center: seoulStationCoordinate,
+            center: munraeStationCoordinate,
             latitudinalMeters: 2000,
             longitudinalMeters: 2000
         )
@@ -59,6 +63,14 @@ class MapViewController: UIViewController {
         annotation.subtitle = "대한민국 서울특별시"
         mapView.addAnnotation(annotation)
     }
+    
+    private func addMunraeStationAnnotation() {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = CLLocationCoordinate2D(latitude: 37.5188, longitude: 126.8998)
+        annotation.title = "문래역"
+        annotation.subtitle = "대한민국 서울특별시"
+        mapView.addAnnotation(annotation)
+    }
      
     @objc private func rightBarButtonTapped() {
         let alertController = UIAlertController(
@@ -67,27 +79,18 @@ class MapViewController: UIViewController {
             preferredStyle: .actionSheet
         )
         
-        let alert1Action = UIAlertAction(title: "얼럿 1", style: .default) { _ in
-            print("얼럿 1이 선택되었습니다.")
+        let categories = viewModel.categories
+        categories.forEach { category in
+            let action = UIAlertAction(title: category, style: .default) { [weak self] _ in
+                self?.viewModel.filter(category: category)
+            }
+            alertController.addAction(action)
         }
         
-        let alert2Action = UIAlertAction(title: "얼럿 2", style: .default) { _ in
-            print("얼럿 2가 선택되었습니다.")
-        }
         
-        let alert3Action = UIAlertAction(title: "얼럿 3", style: .default) { _ in
-            print("얼럿 3이 선택되었습니다.")
-        }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
-            print("취소가 선택되었습니다.")
-        }
-        
-        alertController.addAction(alert1Action)
-        alertController.addAction(alert2Action)
-        alertController.addAction(alert3Action)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         alertController.addAction(cancelAction)
-         
+        
         present(alertController, animated: true, completion: nil)
     }
 }
@@ -97,10 +100,10 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         guard let annotation = view.annotation else { return }
         
-        print("어노테이션이 선택되었습니다.")
-        print("제목: \(annotation.title ?? "제목 없음")")
-        print("부제목: \(annotation.subtitle ?? "부제목 없음")")
-        print("좌표: \(annotation.coordinate.latitude), \(annotation.coordinate.longitude)")
+//        print("어노테이션이 선택되었습니다.")
+//        print("제목: \(annotation.title ?? "제목 없음")")
+//        print("부제목: \(annotation.subtitle ?? "부제목 없음")")
+//        print("좌표: \(annotation.coordinate.latitude), \(annotation.coordinate.longitude)")
         
         // 선택된 어노테이션으로 지도 중심 이동
         let region = MKCoordinateRegion(
@@ -113,5 +116,15 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         print("어노테이션 선택이 해제되었습니다.")
+    }
+    
+    func bind() {
+        viewModel.annotations.bind { [weak self] annotations in
+            guard let self = self else {
+                return }
+            
+            self.mapView.removeAnnotations(self.mapView.annotations)
+            self.mapView.addAnnotations(annotations)
+        }
     }
 }

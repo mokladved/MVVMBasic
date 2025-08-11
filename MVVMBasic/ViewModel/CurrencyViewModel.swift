@@ -16,32 +16,19 @@ final class CurrencyViewModel {
         }
     }
     
-    
-    var message = "" {
-        didSet {
-            outputLabel?()
-        }
-    }
-    
-    var rate = "" {
-        didSet {
-            outputRate?()
-        }
-    }
-    
-    var outputLabel: (() -> Void)?
-    var outputRate: (() -> Void)?
+    var rate: Observable<String?> = Observable(nil)
+    var message: Observable<String?> = Observable(nil)
     
     // TODO: API로 환율 받아와보기
     private func convert() {
         guard let amountText = inputField,
               let amount = Double(amountText) else {
-            message = "올바른 금액을 입력해주세요"
+            message.value = "올바른 금액을 입력해주세요"
             return
         }
         
         let convertedAmount = amount / exchangeRate
-        message = String(format: "%.2f USD (약 $%.2f)", convertedAmount, convertedAmount)
+        message.value = String(format: "%.2f USD (약 $%.2f)", convertedAmount, convertedAmount)
         
     }
 }

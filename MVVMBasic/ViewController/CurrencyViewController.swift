@@ -52,7 +52,7 @@ class CurrencyViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupActions()
-        update()
+        bind()
     }
      
     private func setupUI() {
@@ -87,13 +87,13 @@ class CurrencyViewController: UIViewController {
         }
     }
     
-    private func update() {
-        viewModel.outputRate = { [weak self] in
-            self?.exchangeRateLabel.text = self?.viewModel.rate
+    private func bind() {
+        viewModel.rate.bind { [weak self] rate in
+            self?.exchangeRateLabel.text = rate
         }
 
-        viewModel.outputLabel = { [weak self] in
-            self?.resultLabel.text = self?.viewModel.message
+        viewModel.message.bind { [weak self] message in
+            self?.resultLabel.text = message 
         }
     }
     

@@ -24,7 +24,6 @@ class WordCounterViewController: UIViewController {
     
     private let countLabel: UILabel = {
         let label = UILabel()
-        label.text = "현재까지 0글자 작성중"
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textColor = .systemBlue
@@ -36,7 +35,7 @@ class WordCounterViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupTextView()
-        updateCharacterCount()
+        bind()
     }
      
     private func setupUI() {
@@ -65,8 +64,8 @@ class WordCounterViewController: UIViewController {
         textView.delegate = self
     }
      
-    private func updateCharacterCount() {
-        viewModel.textUpdated = { [weak self] text in
+    private func bind() {
+        viewModel.textUpdated.bind { [weak self] text in
             self?.countLabel.text = text
         }
     }

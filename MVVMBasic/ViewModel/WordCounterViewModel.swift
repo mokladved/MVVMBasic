@@ -14,16 +14,10 @@ final class WordCounterViewModel {
         }
     }
     
-    private var ouputText = "" {
-        didSet {
-            textUpdated?(ouputText)
-        }
-    }
-    
-    var textUpdated: ((String) -> Void)?
+    var textUpdated = Observable("현재까지 0글자 작성중")
 
     private func countText() {
         let count = inputField.count
-        ouputText = "현재까지 \(count)글자 작성중"
+        textUpdated.value = "현재까지 \(count)글자 작성중"
     }
 }

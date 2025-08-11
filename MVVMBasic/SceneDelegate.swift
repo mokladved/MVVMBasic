@@ -29,8 +29,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let currencyVC = CurrencyViewController()
         currencyVC.tabBarItem = UITabBarItem(title: "환율", image: UIImage(systemName: "dollarsign.circle"), tag: 4)
         
+        let mapVC = MapViewController()
+        mapVC.tabBarItem = UITabBarItem(title: "맵", image: UIImage(systemName: "map"), tag: 4)
         
-        tabBarController.viewControllers = [ageVC, bmiVC, birthDayVC, wordVC, currencyVC]
+        
+        tabBarController.viewControllers = [ageVC, bmiVC, birthDayVC, wordVC, currencyVC, mapVC]
         tabBarController.tabBar.tintColor = .systemBlue
         tabBarController.tabBar.unselectedItemTintColor = .systemGray
         

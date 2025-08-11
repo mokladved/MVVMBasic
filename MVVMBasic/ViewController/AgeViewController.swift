@@ -45,12 +45,14 @@ final class AgeViewController: UIViewController {
     }
     
     func update() {
-        viewModel.success = { [weak self] message in
+        viewModel.success.bind { [weak self] message in
             self?.label.text = message
-            
         }
         
-        viewModel.failure = { [weak self] error in
+        viewModel.failure.bind { [weak self] error in
+            guard let error = error else {
+                return
+            }
             self?.label.text = error.description
             self?.showAlert(title: "입력 오류", message: error.description)
         }

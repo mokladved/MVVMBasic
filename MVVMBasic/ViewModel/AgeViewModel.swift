@@ -14,26 +14,29 @@ final class AgeViewModel {
         }
     }
     
-    var success: ((String) -> Void)?
-    var failure: ((AgeValidationError) -> Void)?
+    var success: Observable<String?> = Observable(nil)
+    var failure : Observable<AgeValidationError?> = Observable(nil)
     
     private func validate(_ text: String?) {
+        success.value = nil
+        failure.value = nil
         guard let text, !text.trimmingCharacters(in: .whitespaces).isEmpty else {
-            failure?(.isEmpty)
+            
+            failure.value = .isEmpty
             return
         }
         
         guard let age = Int(text) else {
-            failure?(.notANumber)
+            failure.value = .notANumber
             return
         }
         
         guard (1...100).contains(age) else {
-            failure?(.notValidAge)
+            failure.value = .notValidAge
             return
         }
         
         let message = "당신은 \(age)세 입니다."
-        success?(message)
+        success.value = message
     }
 }

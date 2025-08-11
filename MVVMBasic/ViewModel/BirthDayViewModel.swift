@@ -8,8 +8,8 @@
 import Foundation
 
 final class BirthDayViewModel {
-    var dDayResult: ((String) -> Void)?
-    var validationError: ((BirthDayValidationError) -> Void)?
+    var dDayResult: Observable<String?> = Observable(nil)
+    var validationError: Observable<BirthDayValidationError?> = Observable(nil)
     
     var inputField: (year: String?, month: String?, day: String?)? {
         didSet {
@@ -19,14 +19,16 @@ final class BirthDayViewModel {
     
     
     private func calculateDDay() {
+        dDayResult.value = nil
+        validationError.value = nil
         do {
             let birthDate = try validate(year: inputField?.year, month: inputField?.month, day: inputField?.day)
             if let dDay = calculateDDays(from: birthDate) {
                 let message = "오늘 날짜를 기준으로 D+\(dDay) 입니다."
-                dDayResult?(message)
+                dDayResult.value = message
             }
         } catch let error {
-            validationError?(error)
+            validationError.value = error
         }
     }
 
